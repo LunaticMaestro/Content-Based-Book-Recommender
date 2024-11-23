@@ -16,7 +16,7 @@ GRADIO_TITLE = "Content Based Book Recommender"
 GRADIO_DESCRIPTION = '''
 This is a [HyDE](https://arxiv.org/abs/2212.10496) based searching mechanism that generates random summaries using your input book title and matches books which has summary similary to generated ones. The books, for search, are used from used [Kaggle Dataset: arpansri/books-summary](https://www.kaggle.com/datasets/arpansri/books-summary)
 
-**Should take ~15s to ~30s** for inferencing
+**Should take ~ 15s to 30s** for inferencing.
 '''
 
 # Caching mechanism for gradio

@@ -17,12 +17,23 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
 ![image](https://github.com/user-attachments/assets/b0fbabb6-1218-43c8-ba0b-8b6329502a6c)
 
+## Table of Content
+
+- [Running Inference Locally](#libraries-execution)
+- Pipeline walkthrough in detail
+
+  *For each part of pipeline there is separate script which needs to be executed, mentione in respective section along with output screenshots.*
+  - Training
+    - [Step 1: Data Clean](#step-1-data-clean)
+
+## Local Execution 
+
 ## Libraries installed separately
 
 I used google colab with following libraries extra. 
 
 ```SH
-pip install -U sentence-transformers datasets
+pip install sentence-transformers datasets
 ```
 
 ## Training Steps
