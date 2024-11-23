@@ -18,11 +18,6 @@ This is a [HyDE](https://arxiv.org/abs/2212.10496) based searching mechanism tha
 
 **Should take ~15s to ~30s** for inferencing
 '''
-GRADIO_EXAMPLES = [
-    "Rich Dad Poor Dad",
-    "Love at firs sight",
-    "Importance of idiots"
-]
 
 # Caching mechanism for gradio
 if gr.NO_RELOAD: # Reference: https://www.gradio.app/guides/developing-faster-with-reload-mode
@@ -92,8 +87,7 @@ demo = gr.Interface(
     inputs=input_textbox, 
     outputs=output,
     title=GRADIO_TITLE,
-    #description=GRADIO_DESCRIPTION,
-    #examples=GRADIO_DESCRIPTION
+    description=GRADIO_DESCRIPTION
 )
 
 demo.launch()
