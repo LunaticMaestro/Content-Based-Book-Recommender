@@ -8,14 +8,14 @@
 # def get_recommendation(book_title: str) -> str:
 #     return book_title
 
-from transformers import pipeline, set_seed
+# from transformers import pipeline, set_seed
 
-# CONST
-set_seed(42)
-TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
+# # CONST
+# set_seed(42)
+# TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 
 
-generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+# generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
 
 
