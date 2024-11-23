@@ -1,4 +1,5 @@
 from z_utils import get_dataframe
+import gradio as gr
 
 # CONST
 CLEAN_DF_UNIQUE_TITLES = "unique_titles_books_summary.csv"
@@ -16,8 +17,6 @@ if gr.NO_RELOAD:
     books_df = get_dataframe(CLEAN_DF_UNIQUE_TITLES)
 
     generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
-
-import gradio as gr
 
 # if gr.NO_RELOAD:
 #     from z_similarity import computes_similarity_w_hypothetical
