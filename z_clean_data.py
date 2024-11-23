@@ -2,7 +2,7 @@ from z_utils import get_dataframe
 
 # Const
 ORIGNAL_DF = "books_summary.csv"
-CLEAN_DF = "cleaned_"+ORIGNAL_DF 
+CLEAN_DF = "clean_"+ORIGNAL_DF 
 CLEAN_DF_UNIQUE_TITLES = "unique_titles_"+ORIGNAL_DF
 
 # Load dataset
