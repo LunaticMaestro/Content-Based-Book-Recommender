@@ -61,4 +61,4 @@ textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew",
 output = gr.Textbox(label="something")
 demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
 
-demo.launch(debug=True)
+demo.launch()
