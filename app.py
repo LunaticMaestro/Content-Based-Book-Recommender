@@ -8,6 +8,16 @@
 # def get_recommendation(book_title: str) -> str:
 #     return book_title
 
+from transformers import pipeline, set_seed
+
+# CONST
+set_seed(42)
+TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
+
+
+generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+
+
 
 # def sanity_check():
 #     '''Validates whether the vectors count is of same as summaries present else RAISES Error
@@ -25,12 +35,13 @@ import gradio as gr
 # from z_hypothetical_summary import generate_summaries, generator_model
 
 def get_recommendation(book_title: str) -> str:
-    return "Hello"
+    global generator_model
+    # return "Hello"
     # # Generate hypothetical summary
-    # value = generator_model("hello", max_length=50)
+    value = generator_model("hello", max_length=50)
     # # fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
     # # return fake_summaries[0]
-    # return str(value)
+    return str(value)
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write truth you wana Know:", placeholder="John Doe", lines=2)
