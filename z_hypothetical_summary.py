@@ -8,8 +8,10 @@ from transformers import pipeline, set_seed
 set_seed(42)
 TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 
+import gradio as gr
 
-generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+if gr.NO_RELOAD:
+	generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
 
 def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2, top_k = 50, top_p = 0.85, ) -> list[str]:

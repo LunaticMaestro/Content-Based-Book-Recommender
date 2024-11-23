@@ -11,7 +11,11 @@ CACHE_SUMMARY_EMB_NPY = "app_cache/summary_vectors.npy"
 
 # Load Model
 #   setting this at global level because entire runtime will continue to use this model.
-model = SentenceTransformer(EMB_MODEL)
+
+import gradio as gr
+
+if gr.NO_RELOAD:
+	model = SentenceTransformer(EMB_MODEL)
 
 
 
