@@ -12,8 +12,11 @@ N_RECOMMENDS = 5
 # generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
 import gradio as gr
-from z_similarity import computes_similarity_w_hypothetical
-from z_hypothetical_summary import generate_summaries
+
+if gr.NO_RELOAD:
+    from z_similarity import computes_similarity_w_hypothetical
+    from z_hypothetical_summary import generate_summaries
+    
 from z_utils import get_dataframe
 
 books_df = get_dataframe(CLEAN_DF_UNIQUE_TITLES)
