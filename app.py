@@ -1,5 +1,6 @@
 from z_utils import get_dataframe
 import gradio as gr
+from z_hypothetical_summary import generate_summaries
 
 # CONST
 CLEAN_DF_UNIQUE_TITLES = "unique_titles_books_summary.csv"
@@ -20,7 +21,7 @@ if gr.NO_RELOAD:
 
 # if gr.NO_RELOAD:
 #     from z_similarity import computes_similarity_w_hypothetical
-#     from z_hypothetical_summary import generate_summaries
+#     
 
 
 def get_recommendation(book_title: str) -> str:
