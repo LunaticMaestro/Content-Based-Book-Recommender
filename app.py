@@ -49,8 +49,10 @@ def get_recommendation(book_title: str) -> dict:
     df_ranked =  books_df.iloc[ranks]
     df_ranked = df_ranked.reset_index()
     
-    books = df_ranked["book_name"][:N_RECOMMENDS]
+    books = df_ranked["book_name"].to_list()[:N_RECOMMENDS]
     scores = similarity[ranks][:N_RECOMMENDS]
+    print(scores)
+    print(type(scores))
 
     return {book: score for book, score in zip(books, scores)} # referene: https://huggingface.co/docs/hub/en/spaces-sdks-gradio
 
