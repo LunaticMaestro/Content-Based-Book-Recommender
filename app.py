@@ -84,7 +84,7 @@ def get_recommendation(book_title: str) -> list:
 input_textbox = gr.Textbox(label="Search for book with name similary to", placeholder="Rich Dad Poor Dad", max_lines=1)
 
 # Output Interface Render
-output = [gr.Label(label="Similar Books"), gr.HTML(label="Books Descriptions", label=True)]
+output = [gr.Label(label="Similar Books"), gr.HTML(label="Books Descriptions", show_label=True)]
 
 # Stich interace and run
 demo = gr.Interface(
