@@ -15,26 +15,54 @@ A HyDE based approach for building recommendation engine.
 
 Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
-![image](https://github.com/user-attachments/assets/b0fbabb6-1218-43c8-ba0b-8b6329502a6c)
+![image](.resources/preview.png)
 
 ## Table of Content
 
+> All images are my actual work please source powerpoint of them in `.resources` folder of this repo.
+
 - [Running Inference Locally](#libraries-execution)
+- [10,000 feet Approach overview](#approach)
 - Pipeline walkthrough in detail
 
-  *For each part of pipeline there is separate script which needs to be executed, mentione in respective section along with output screenshots.*
+  *For each part of pipeline there is separate script which needs to be executed, mentioned in respective section along with output screenshots.*
   - Training
     - [Step 1: Data Clean](#step-1-data-clean)
 
-## Local Execution 
+## Running Inference Locally
 
-## Libraries installed separately
-
-I used google colab with following libraries extra. 
+### Libraries 
+I used google colab with following libraries extra.
 
 ```SH
 pip install sentence-transformers datasets
 ```
+
+### Running 
+
+#### Local System 
+
+```SH 
+python app.py
+```
+access at http://localhost:7860/ 
+
+#### Goolge Colab 
+
+Modify app.py edit line 93 to `demo.launch(share=True)` then run following in cell.
+
+```
+!python app.py
+```
+
+## Approach
+
+![image](.resources/approach.png)
+
+References:
+- This is the core idea: https://arxiv.org/abs/2212.10496
+- https://github.com/aws-samples/content-based-item-recommender
+- For future, a very complex work https://github.com/HKUDS/LLMRec
 
 ## Training Steps
 
