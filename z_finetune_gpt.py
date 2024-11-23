@@ -13,7 +13,7 @@ BASE_CASUAL_MODEL = "openai-community/gpt2"
 TRAINED_MODEL_OUTPUT_DIR = "content" # same name for HF Hub
 
 set_seed(42)
-EPOCHS = 1
+EPOCHS = 2
 LR = 2e-5
 
 # Load dataset

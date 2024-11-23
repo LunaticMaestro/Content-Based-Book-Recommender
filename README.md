@@ -115,7 +115,7 @@ What is not taken care
 python z_clean_data.py
 ```
 
-![image](https://github.com/user-attachments/assets/a466c20b-60ed-47ac-8bfc-e0a38ccdb88d)
+![image](.resources/clean_3.png)
 
 
 Output: `clean_books_summary.csv`, `unique_titles_books_summary.csv`
@@ -123,11 +123,17 @@ Output: `clean_books_summary.csv`, `unique_titles_books_summary.csv`
 
 ### Step 2: Generate vectors of the books summaries.
 
-Here, I am going to use pretrained sentence encoder that will help get the meaning of the sentence. As the semantic meaning of the summaries themselves are not changed.
+**WHAT & WHY** 
 
-We perform this over `unique_titles_books_summary.csv` dataset
 
-![image](https://github.com/user-attachments/assets/21d2d92b-0ad5-4686-8e38-c47df10893f8)
+Here, I am going to use pretrained sentence encoder that will help get the meaning of the sentence. We perform this over `unique_titles_books_summary.csv` dataset
+
+Caching because the semantic meaning of the summaries (for books to output) are not changed during entire runtime.
+
+![image](.resources/generate_emb.png)
+
+
+**RUN**:
 
 Use command
 ```SH
@@ -136,7 +142,8 @@ python z_embedding.py
 
 Just using CPU should take <1 min
 
-![image](https://github.com/user-attachments/assets/5765d586-cc50-4adf-b714-5e371f757f38)
+![image](.resources/generate_emb2.png)
+
 
 Output: `app_cache/summary_vectors.npy`
 
