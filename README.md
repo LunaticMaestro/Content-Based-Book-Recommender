@@ -13,6 +13,10 @@ short_description: A content based book recommender.
 # Content-Based-Book-Recommender
 A HyDE based approach for building recommendation engine.
 
+Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
+
+![image](https://github.com/user-attachments/assets/b0fbabb6-1218-43c8-ba0b-8b6329502a6c)
+
 ## Libraries installed separately
 
 I used google colab with following libraries extra. 
@@ -156,7 +160,13 @@ The values of TOP_P and TOP_K (i.e. token sampling for our generator model) are 
 
 MRR = 0.311 implies that there's a good change that the target book will be in rank (1/.311) ~ 3 (third rank) **i.e. within top 5 recommendations**
 
-## Inference View
+## Inference
+
+`app.py` is written so that it can best work with gradio interface in the HuggingFace, althought you can try it out locally as well :)
+
+```SH
+python app.py
+```
 
 1. I rewrote the snippets from `z_evaluate.py` to `app.py` with minor changes to expriment with view. 
 2. DONT set `debug=True` for gradio in HF space, else it doesn't start.
