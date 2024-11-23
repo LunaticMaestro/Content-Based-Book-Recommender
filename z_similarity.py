@@ -1,11 +1,11 @@
 from z_utils import load_cache_embeddings 
-from z_embedding import model, get_embeddings
+from z_embedding import load_model, get_embeddings
 import torch 
 import numpy as np
 
 books_summaries_embs = load_cache_embeddings()
 
-def computes_similarity_w_hypothetical(hypothetical_summaries: list[str]) -> (np.ndarray, np.ndarray):
+def computes_similarity_w_hypothetical(hypothetical_summaries: list[str], model = None) -> (np.ndarray, np.ndarray):
     '''Computes cosine similarity between stored book_summaries and all hypothetical_summaries
     
     Returns: 
@@ -14,7 +14,9 @@ def computes_similarity_w_hypothetical(hypothetical_summaries: list[str]) -> (np
         
         Ranks of the books summaries based on above consine similarity Distance; Lower ranks means more similar
     '''
-    global books_summaries_embs, model
+    global books_summaries_embs
+    model = model if model else load_model()
+    
     hypothetical_summaries_embs = get_embeddings(hypothetical_summaries)
     similarity: torch.Tensor = model.similarity(books_summaries_embs, hypothetical_summaries_embs)
 

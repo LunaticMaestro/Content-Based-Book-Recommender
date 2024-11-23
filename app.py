@@ -1,7 +1,9 @@
 from z_utils import get_dataframe
 import gradio as gr
 from z_hypothetical_summary import generate_summaries
+from z_similarity import computes_similarity_w_hypothetical
 from transformers import pipeline, set_seed
+from sentence_transformers import SentenceTransformer
 
 
 # CONST
@@ -9,7 +11,7 @@ CLEAN_DF_UNIQUE_TITLES = "unique_titles_books_summary.csv"
 N_RECOMMENDS = 5
 set_seed(42)
 TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
-
+EMB_MODEL = "all-MiniLM-L6-v2"
 
 if gr.NO_RELOAD:
     # Load store books
@@ -18,16 +20,17 @@ if gr.NO_RELOAD:
     # Load generator model
     generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
-    from z_similarity import computes_similarity_w_hypothetical
+    # Load embedding model 
+    emb_model = SentenceTransformer(EMB_MODEL)
 
 
 def get_recommendation(book_title: str) -> str:
-    global generator_model
+    global generator_model, emb_model
     # output = generator_model("Love")
     fake_summaries = generate_summaries(book_title=book_title, n_samples=5, model=generator_model) # other parameters are set to default in the function
     
     # Compute Simialrity 
-    similarity, ranks = computes_similarity_w_hypothetical(hypothetical_summaries=fake_summaries)
+    similarity, ranks = computes_similarity_w_hypothetical(hypothetical_summaries=fake_summaries, model=emb_model)
 
     # Get ranked Documents 
     df_ranked =  books_df.iloc[ranks]

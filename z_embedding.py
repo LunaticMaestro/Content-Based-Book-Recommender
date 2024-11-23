@@ -9,15 +9,13 @@ EMB_MODEL = "all-MiniLM-L6-v2"
 INP_DATASET_CSV = "unique_titles_books_summary.csv" 
 CACHE_SUMMARY_EMB_NPY = "app_cache/summary_vectors.npy"
 
-# Load Model
-#   setting this at global level because entire runtime will continue to use this model.
+model = None 
 
-import gradio as gr
-
-if gr.NO_RELOAD: # Required for faster working with HF spaces
-	model = SentenceTransformer(EMB_MODEL)
-
-
+def load_model():
+    global model 
+    if model is None: 
+        model = SentenceTransformer(EMB_MODEL)
+    return model
 
 def dataframe_compute_summary_vector(books_df: pd.DataFrame) -> np.ndarray:
     '''Takes books summaries and compute embedding vectors 
@@ -30,7 +28,7 @@ def dataframe_compute_summary_vector(books_df: pd.DataFrame) -> np.ndarray:
     Returns:
         pd.DataFrame: The processed DataFrame with new column `vector`
     '''
-    global model
+    model = load_model()
     
     if 'summaries' not in books_df.columns:
         raise ValueError("DataFrame must contain 'summaries' columns.")
