@@ -22,7 +22,7 @@
 
 import gradio as gr
 from z_similarity import computes_similarity_w_hypothetical
-from z_hypothetical_summary import generate_summaries
+from z_hypothetical_summary import generate_summaries, generator_model
 
 def get_recommendation(book_title: str) -> str:
     # Generate hypothetical summary
