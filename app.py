@@ -8,16 +8,6 @@
 # def get_recommendation(book_title: str) -> str:
 #     return book_title
 
-from transformers import pipeline, set_seed
-
-# CONST
-set_seed(42)
-TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
-
-
-generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
-
-
 
 # def sanity_check():
 #     '''Validates whether the vectors count is of same as summaries present else RAISES Error
@@ -32,7 +22,7 @@ generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
 import gradio as gr
 # from z_similarity import computes_similarity_w_hypothetical
-# from z_hypothetical_summary import generate_summaries, generator_model
+from z_hypothetical_summary import generate_summaries, generator_model
 
 def get_recommendation(book_title: str) -> str:
     global generator_model
