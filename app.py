@@ -1,15 +1,13 @@
 from z_utils import get_dataframe
 import gradio as gr
 from z_hypothetical_summary import generate_summaries
+from transformers import pipeline, set_seed
+
 
 # CONST
 CLEAN_DF_UNIQUE_TITLES = "unique_titles_books_summary.csv"
 N_RECOMMENDS = 5
-
-from transformers import pipeline, set_seed
-
-# # CONST
-# set_seed(42)
+set_seed(42)
 TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 
 
@@ -17,11 +15,10 @@ if gr.NO_RELOAD:
     # Load store books
     books_df = get_dataframe(CLEAN_DF_UNIQUE_TITLES)
 
+    # Load generator model
     generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
-# if gr.NO_RELOAD:
-#     from z_similarity import computes_similarity_w_hypothetical
-#     
+    from z_similarity import computes_similarity_w_hypothetical
 
 
 def get_recommendation(book_title: str) -> str:
@@ -29,10 +26,11 @@ def get_recommendation(book_title: str) -> str:
     # output = generator_model("Love")
     fake_summaries = generate_summaries(book_title=book_title, n_samples=5, model=generator_model) # other parameters are set to default in the function
     
-    return fake_summaries[0]
     # Compute Simialrity 
     similarity, ranks = computes_similarity_w_hypothetical(hypothetical_summaries=fake_summaries)
-    
+
+    return fake_summaries[0]
+
     # Get ranked Documents 
     df_ranked =  books_df.iloc[ranks]
     df_ranked = df_ranked.reset_index()
