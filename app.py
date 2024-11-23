@@ -29,8 +29,6 @@ def get_recommendation(book_title: str) -> str:
     # Compute Simialrity 
     similarity, ranks = computes_similarity_w_hypothetical(hypothetical_summaries=fake_summaries)
 
-    return fake_summaries[0]
-
     # Get ranked Documents 
     df_ranked =  books_df.iloc[ranks]
     df_ranked = df_ranked.reset_index()
@@ -62,8 +60,8 @@ def get_recommendation(book_title: str) -> str:
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew", lines=2)
-# output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
-output = gr.Textbox(label="something")
+output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
+# output = gr.Textbox(label="something")
 demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
 
 demo.launch()
