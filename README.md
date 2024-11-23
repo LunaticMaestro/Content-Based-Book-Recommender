@@ -159,10 +159,8 @@ MRR = 0.311 implies that there's a good change that the target book will be in r
 ## Inference View
 
 1. I rewrote the snippets from `z_evaluate.py` to `app.py` with minor changes to expriment with view. 
-2. To make the HF space faster (previously: 234s; **NOW: 15s**) I added `gr.NO_RELOAD` context block in the module files when loading embedding and generation model.
-  Reference: https://www.gradio.app/guides/developing-faster-with-reload-mode
-3. DONT set `debug=True` for gradio in HF space, else it doesn't start.
-
+2. DONT set `debug=True` for gradio in HF space, else it doesn't start.
+3. HF space work differently for retaining models across module scipts; local running (tried in colab space) works  faster. You will see lot of my commits in HF Space to work around this problem.
 
 
 

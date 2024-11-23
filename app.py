@@ -12,8 +12,20 @@ N_RECOMMENDS = 5
 set_seed(42)
 TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 EMB_MODEL = "all-MiniLM-L6-v2"
+GRADIO_TITLE = "Content Based Book Recommender"
+GRADIO_DESCRIPTION = '''
+This is a [HyDE](https://arxiv.org/abs/2212.10496) based searching mechanism that generates random summaries using your input book title and matches books which has summary similary to generated ones. The books, for search, are used from used [Kaggle Dataset: arpansri/books-summary](https://www.kaggle.com/datasets/arpansri/books-summary)
 
-if gr.NO_RELOAD:
+**Should take ~15s to ~30s** for inferencing
+'''
+GRADIO_EXAMPLES = [
+    "Rich Dad Poor Dad",
+    "Love at firs sight",
+    "Importance of idiots"
+]
+
+# Caching mechanism for gradio
+if gr.NO_RELOAD: # Reference: https://www.gradio.app/guides/developing-faster-with-reload-mode
     # Load store books
     books_df = get_dataframe(CLEAN_DF_UNIQUE_TITLES)
 
@@ -23,9 +35,17 @@ if gr.NO_RELOAD:
     # Load embedding model 
     emb_model = SentenceTransformer(EMB_MODEL)
 
+def get_recommendation(book_title: str) -> list:
+    '''Returns data model suitable to be render in gradio interface;
 
-def get_recommendation(book_title: str) -> str:
+    Args:
+        book_title: the book name you are looking for
+
+    Returns 
+     list of two values; firs value is a dictionary of <book, similarity_score>; Second Value is the card view in html generated form
+    '''
     global generator_model, emb_model
+
     # output = generator_model("Love")
     fake_summaries = generate_summaries(book_title=book_title, n_samples=5, model=generator_model) # other parameters are set to default in the function
     
@@ -36,16 +56,15 @@ def get_recommendation(book_title: str) -> str:
     df_ranked =  books_df.iloc[ranks]
     df_ranked = df_ranked.reset_index()
     
+    # post-process for gradio interface
     books = df_ranked["book_name"].to_list()[:N_RECOMMENDS]
     summaries = df_ranked["summaries"].to_list()[:N_RECOMMENDS]
     scores = similarity[ranks][:N_RECOMMENDS]
-
-    # label wise similarity 
+    #
+    # For gr.Label interface
     label_similarity: dict = {book: score for book, score in zip(books, scores)}
     #
-    # book_summaries: list[str] = [f"**{book}** \n {summary}" for book, summary in zip(books, summaries)]
-
-    # Generate card-style HTML
+    # Generate card-style HTML; to render book names and their summaries
     html = "<div style='display: flex; flex-wrap: wrap; gap: 1rem;'>"
     for book, summary in zip(books, summaries):
         html += f"""
@@ -56,15 +75,25 @@ def get_recommendation(book_title: str) -> str:
         """
     html += "</div>"
 
-    # Club the output to be processed by gradio
+    # Club the output to be processed by gradio INterface
     response = [label_similarity, html]
 
     return response
 
-# We instantiate the Textbox class
-textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew", lines=2)
-output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
-# output = gr.Textbox(label="something")
-demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
+# Input Interface Render
+input_textbox = gr.Textbox(label="Search for book with name similary to", placeholder="Rich Dad Poor Dad", max_lines=1)
+
+# Output Interface Render
+output = [gr.Label(label="Similar Books"), gr.HTML(label="Books Descriptions", label=True)]
+
+# Stich interace and run
+demo = gr.Interface(
+    fn=get_recommendation, 
+    inputs=input_textbox, 
+    outputs=output,
+    title=GRADIO_TITLE,
+    description=GRADIO_DESCRIPTION,
+    examples=GRADIO_DESCRIPTION
+)
 
 demo.launch()
