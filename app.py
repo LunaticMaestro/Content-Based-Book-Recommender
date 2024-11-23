@@ -60,7 +60,6 @@ def get_recommendation(book_title: str) -> dict:
 
     # return response
     # Generate card-style HTML
-
     html = "<div style='display: flex; flex-wrap: wrap; gap: 1rem;'>"
     for book, summary in zip(books, summaries):
         html += f"""
@@ -72,7 +71,7 @@ def get_recommendation(book_title: str) -> dict:
     html += "</div>"
 
     # Club the output to be processed by gradio
-    response = [label_similarity, html]
+    response = [label_similarity, ] #html]
 
     return response
 
@@ -83,7 +82,7 @@ def get_recommendation(book_title: str) -> dict:
 textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew", lines=2)
 # label = gr.Label(label="Result", num_top_classes=N_RECOMMENDS)
 # output = [gr.Label(label="Result", num_top_classes=N_RECOMMENDS)] + [gr.Textbox(label="Recommendation") for i in range(N_RECOMMENDS)]
-output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
+output = [gr.Label(label="Similarity"), ] # gr.HTML(label="Books Descriptions")]
 demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
 
 demo.launch()
