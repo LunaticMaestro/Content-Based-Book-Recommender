@@ -21,16 +21,18 @@
 # Reference: https://huggingface.co/learn/nlp-course/en/chapter9/2
 
 import gradio as gr
+from z_similarity import computes_similarity_w_hypothetical
+from z_hypothetical_summary import generate_summaries
 
-
-def greet(name):
-    return "Hello " + name
-
+def get_recommendation(book_title: str):
+    # Generate hypothetical summary
+    fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
+    return fake_summaries[0]
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write truth you wana Know:", placeholder="John Doe", lines=2)
 
 
-demo = gr.Interface(fn=greet, inputs=textbox, outputs="text")
+demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs="text")
 
 demo.launch()
