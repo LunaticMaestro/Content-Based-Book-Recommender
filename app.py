@@ -24,10 +24,12 @@ import gradio as gr
 from z_similarity import computes_similarity_w_hypothetical
 from z_hypothetical_summary import generate_summaries
 
-def get_recommendation(book_title: str):
+def get_recommendation(book_title: str) -> str:
     # Generate hypothetical summary
-    fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
-    return fake_summaries[0]
+    value = generator_model("hello", max_length=50)
+    # fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
+    # return fake_summaries[0]
+    return str(value)
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write truth you wana Know:", placeholder="John Doe", lines=2)
