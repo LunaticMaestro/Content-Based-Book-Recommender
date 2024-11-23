@@ -53,10 +53,10 @@ def dataframe_compute_summary_vector(books_df: pd.DataFrame) -> np.ndarray:
 
     return summary_vectors
 
-def get_embeddings(summaries: list[str]) -> np.ndarray: 
+def get_embeddings(summaries: list[str], model = None) -> np.ndarray: 
     '''Utils function to to take in hypothetical document(s) and return the embedding of it(s)
     '''
-    global model
+    model = model if model else load_model()
     if isinstance(summaries, str): 
         summaries = [summaries, ]
     return model.encode(summaries)
