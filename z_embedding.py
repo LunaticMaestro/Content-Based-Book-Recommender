@@ -14,7 +14,7 @@ CACHE_SUMMARY_EMB_NPY = "app_cache/summary_vectors.npy"
 
 import gradio as gr
 
-if gr.NO_RELOAD:
+if gr.NO_RELOAD: # Required for faster working with HF spaces
 	model = SentenceTransformer(EMB_MODEL)
 
 

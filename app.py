@@ -50,9 +50,23 @@ def get_recommendation(book_title: str) -> dict:
     df_ranked = df_ranked.reset_index()
     
     books = df_ranked["book_name"].to_list()[:N_RECOMMENDS]
+    summaries = df_ranked["summaries"].to_list()[:N_RECOMMENDS]
     scores = similarity[ranks][:N_RECOMMENDS]
-    print(scores)
-    print(type(scores))
+
+    output_data_model: list[dict] = [ {"Book": b, "Similarity Score": s, "Description": d} for b, s, d in zip(books, summaries, scores)]
+
+    # Generate card-style HTML
+    html = "<div style='display: flex; flex-wrap: wrap; gap: 1rem;'>"
+    for rec in output_data_model:
+        html += f"""
+        <div style='border: 1px solid #ddd; border-radius: 8px; padding: 1rem; width: 200px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);'>
+            <h3 style='margin: 0;'>{rec['Book']}</h3>
+            <p style='margin: 0.5rem 0;'>Similarity Score: {rec['Similarity Score']}</p>
+            <p style='font-size: 0.9rem; color: #555;'>{rec['Description']}</p>
+        </div>
+        """
+    html += "</div>"
+    return html
 
     return {book: score for book, score in zip(books, scores)} # referene: https://huggingface.co/docs/hub/en/spaces-sdks-gradio
 
@@ -61,8 +75,9 @@ def get_recommendation(book_title: str) -> dict:
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew", lines=2)
-label = gr.Label(label="Result", num_top_classes=N_RECOMMENDS)
+# label = gr.Label(label="Result", num_top_classes=N_RECOMMENDS)
+output = gr.HTML(label="Recommended Books")
 
-demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=label)
+demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
 
 demo.launch()
