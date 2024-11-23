@@ -8,8 +8,11 @@ from transformers import pipeline, set_seed
 set_seed(42)
 TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 
+generator_model = None 
 
-generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+def load_model():
+    global generator_model
+    generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
 
 
 def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2, top_k = 50, top_p = 0.85, model=None) -> list[str]:
@@ -27,11 +30,10 @@ def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2
     '''
     global generator_model
 
-    generator_model
     if model: 
         generator_model = model 
     else:
-        generator_model = generator_model
+        generator_model = generator_model if generator_model is not None else load_model()
 
     # basic prompt very similary to one used in fine-tuning
     prompt = f'''Book Title: {book_title}
