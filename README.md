@@ -17,9 +17,19 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
 ![image](.resources/preview.png)
 
+## Foreword
+
+- All images are my actual work please source powerpoint of them in `.resources` folder of this repo.
+
+- Code is documentation is as per [Google's Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+
+- ALL files Paths are at set as CONST in beginning of each script, to make it easier while using the paths while inferencing & evaluation; hence not passing as CLI arguments
+
+- prefix `z_` in filenames is just to avoid confusion (to human) of which is prebuilt module and which is custom during import.
+
 ## Table of Content
 
-> All images are my actual work please source powerpoint of them in `.resources` folder of this repo.
+> 
 
 - [Running Inference Locally](#libraries-execution)
 - [10,000 feet Approach overview](#approach)
@@ -30,6 +40,14 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
     - [Step 1: Data Clean](#step-1-data-clean)
 
 ## Running Inference Locally
+
+### Memory Requirements
+
+The code need <2Gb RAM to use both the following. Just CPU works fine for inferencing.
+
+  - https://huggingface.co/openai-community/gpt2 ~500 mb
+  - https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2 <500 mb
+
 
 ### Libraries 
 I used google colab with following libraries extra.
@@ -66,23 +84,32 @@ References:
 
 ## Training Steps
 
-**ALL files Paths are at set as CONST in beginning of each script, to make it easier while using the paths while inferencing; hence not passing as CLI arguments**
-
 ### Step 1: Data Clean
 
-I am going to do basic steps like unwanted column removal (the first column of index), missing values removal (drop rows), duplicate rows removal. Output Screenshot attached.
+What is taken care
+  - unwanted column removal (the first column of index)
+  - missing values removal (drop rows)
+  - duplicate rows removal.
+  
+What is not taken care
+  - stopword removal, stemming/lemmatization or special character removal 
+  
+  **because approach is to use the casual language modelling (later steps) hence makes no sense to rip apart the word meaning**
 
-I am NOT doing any text pre-processing steps like stopword removal, stemming/lemmatization or special character removal because my approach is to use the casual language modelling (later steps) hence makes no sense to rip apart the word meaning via these word-based techniques.
 
-A little tinker in around with the dataset found that some titles can belong to multiple categories. (*this code I ran separately, is not part of any script*)
+### Observations from `z_cleand_data.ipynb`
 
-![image](https://github.com/user-attachments/assets/cdf9141e-21f9-481a-8b09-913a0006db87)
+- Same title corresponds to different categories
 
-A descriptive analysis shows that there are just 1230 unique titles. (*this code I ran separately, is not part of any script*)
+  ![image](.resources/clean_1.png)
 
-![image](https://github.com/user-attachments/assets/072b4ed7-7a4d-48b2-a93c-7b08fc5bee45)
+- Total 1230 unique titles.
 
-We are not going to remove them rows that shows same titles (& summaries) with different categories but rather create a separate file for unique titles.
+  ![image](.resources/clean_2.png)
+
+**Action**: We are not going to remove them rows that shows same titles (& summaries) with different categories but rather create a separate file for unique titles.
+
+**RUN**: 
 
 ```SH
 python z_clean_data.py

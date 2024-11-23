@@ -31,7 +31,7 @@ print(f"\n\nCleaned Shape: {books_df.shape}")
 
 # Saving these cleaned DF
 print("Storing cleaned as (this includes same titles with diff cats: "+CLEAN_DF)
-books_df.to_csv(ORIGNAL_DF, index=False)
+books_df.to_csv(CLEAN_DF, index=False)
 
 # ==== NOW to store the unique titles  ====
 books_df = books_df[["book_name", "summaries"]]
