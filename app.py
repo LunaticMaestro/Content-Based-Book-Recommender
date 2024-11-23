@@ -19,9 +19,10 @@ from z_utils import get_dataframe
 books_df = get_dataframe(CLEAN_DF_UNIQUE_TITLES)
 
 
-def get_recommendation(book_title: str) -> dict:
+def get_recommendation(book_title: str) -> str:
     fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
     
+    return fake_summaries[0]
     # Compute Simialrity 
     similarity, ranks = computes_similarity_w_hypothetical(hypothetical_summaries=fake_summaries)
     
@@ -56,7 +57,8 @@ def get_recommendation(book_title: str) -> dict:
 
 # We instantiate the Textbox class
 textbox = gr.Textbox(label="Write random title", placeholder="The Man who knew", lines=2)
-output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
+# output = [gr.Label(label="Similarity"), gr.HTML(label="Books Descriptions")]
+output = gr.Textbox(label="something")
 demo = gr.Interface(fn=get_recommendation, inputs=textbox, outputs=output)
 
-demo.launch()
+demo.launch(debug=True)
