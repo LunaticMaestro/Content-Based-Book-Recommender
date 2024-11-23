@@ -92,8 +92,8 @@ demo = gr.Interface(
     inputs=input_textbox, 
     outputs=output,
     title=GRADIO_TITLE,
-    description=GRADIO_DESCRIPTION,
-    examples=GRADIO_DESCRIPTION
+    #description=GRADIO_DESCRIPTION,
+    #examples=GRADIO_DESCRIPTION
 )
 
 demo.launch()
