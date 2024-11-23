@@ -26,8 +26,7 @@ if gr.NO_RELOAD:
 
 def get_recommendation(book_title: str) -> str:
     global generator_model
-    output = generator_model("Love")
-    return str(output)
+    # output = generator_model("Love")
     fake_summaries = generate_summaries(book_title=book_title, n_samples=5) # other parameters are set to default in the function
     
     return fake_summaries[0]
