@@ -17,8 +17,6 @@ A HyDE based approach for building recommendation engine.
 
 I used google colab with following libraries extra. 
 
-NOT storing `requirements.txt` because issue while pushing to HF space.
-
 ```SH
 pip install -U sentence-transformers datasets
 ```
