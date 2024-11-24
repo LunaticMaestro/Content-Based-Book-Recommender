@@ -1,4 +1,7 @@
 # THIS file is meant to be used once hence not having functions just sequential code
+# Fine-tuning code instructions are from https://huggingface.co/docs/transformers/en/tasks/language_modeling
+
+
 import pandas as pd
 from transformers import AutoTokenizer, set_seed
 from transformers import DataCollatorForLanguageModeling
@@ -9,11 +12,9 @@ from z_utils import get_dataframe
 # CONST 
 INP_DATASET_CSV = "clean_books_summary.csv" 
 BASE_CASUAL_MODEL = "openai-community/gpt2"
-# TRAINED_MODEL_OUTPUT_DIR = "gpt2-book-summary-generator" # same name for HF Hub
-TRAINED_MODEL_OUTPUT_DIR = "content" # same name for HF Hub
-
+TRAINED_MODEL_OUTPUT_DIR = "gpt2-book-summary-generator" # same name for HF Hub
 set_seed(42)
-EPOCHS = 2
+EPOCHS = 2 # 10
 LR = 2e-5
 
 # Load dataset

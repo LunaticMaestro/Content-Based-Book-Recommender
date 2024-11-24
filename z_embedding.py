@@ -3,15 +3,18 @@ import pandas as pd
 import numpy as np
 from z_utils import get_dataframe
 from tqdm import tqdm 
+from typing import Any
 
 # CONST
 EMB_MODEL = "all-MiniLM-L6-v2"
 INP_DATASET_CSV = "unique_titles_books_summary.csv" 
 CACHE_SUMMARY_EMB_NPY = "app_cache/summary_vectors.npy"
 
+# GLOBAL VAR
 model = None 
 
 def load_model():
+    '''Workaround for HF space; cross scrip loading is slow.'''
     global model 
     if model is None: 
         model = SentenceTransformer(EMB_MODEL)
@@ -53,14 +56,20 @@ def dataframe_compute_summary_vector(books_df: pd.DataFrame) -> np.ndarray:
 
     return summary_vectors
 
-def get_embeddings(summaries: list[str], model = None) -> np.ndarray: 
+def get_embeddings(summaries: list[str], model: Any = None) -> np.ndarray: 
     '''Utils function to to take in hypothetical document(s) and return the embedding of it(s)
+    
+    Args:
+        summaries: differe hypothetical summaries
+        model: The embedding model, see `app.py` to fast the HF cross-script loading.
+    
+    Returns
+        list of embeddings
     '''
     model = model if model else load_model()
     if isinstance(summaries, str): 
         summaries = [summaries, ]
     return model.encode(summaries)
-
 
 def cache_create_embeddings(books_csv_path: str, output_path: str) -> None:
     '''Read the books csv and generate vectors of the `summaries` columns and store in `output_path` 
@@ -69,7 +78,6 @@ def cache_create_embeddings(books_csv_path: str, output_path: str) -> None:
     vectors = dataframe_compute_summary_vector(books_df)
     np.save(file=output_path, arr=vectors)
     print(f"Vectors saved to {output_path}")
-
 
 if __name__ == "__main__":
     print("Generating vectors of the summaries")

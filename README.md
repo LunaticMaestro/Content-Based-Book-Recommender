@@ -36,9 +36,13 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 - Pipeline walkthrough in detail
 
   *For each part of pipeline there is separate script which needs to be executed, mentioned in respective section along with output screenshots.*
-  - Training
+  - [Training](#training-steps)
     - [Step 1: Data Clean](#step-1-data-clean)
+    - [Step 2: Generate vectors of the books summaries](#step-2-generate-vectors-of-the-books-summaries)
+    - [Step 3: Fine-tune GPT-2 to Hallucinate but with some bounds.](#step-3-fine-tune-gpt-2-to-hallucinate-but-with-some-bounds)
 
+  - [Evaluation](#evaluation)
+  - Inference
 ## Running Inference Locally
 
 ### Memory Requirements
@@ -79,7 +83,7 @@ Modify app.py edit line 93 to `demo.launch(share=True)` then run following in ce
 
 References:
 - This is the core idea: https://arxiv.org/abs/2212.10496
-- https://github.com/aws-samples/content-based-item-recommender
+- Another work based on same, https://github.com/aws-samples/content-based-item-recommender
 - For future, a very complex work https://github.com/HKUDS/LLMRec
 
 ## Training Steps
@@ -149,16 +153,20 @@ Output: `app_cache/summary_vectors.npy`
 
 ### Step 3: Fine-tune GPT-2 to Hallucinate but with some bounds.
 
-Lets address the **Hypothetical** part of HyDE approach. Its all about generating random summaries,in short hallucinating. While the **Document Extraction** (part of HyDE) is about using these hallucinated summaries to do semantic search on database. 
+**What & Why**
 
-Two very important reasons why to fine-tune GPT-2 
+Hypothetical Document Extraction (HyDE) in nutshell
+  - The **Hypothetical** part of HyDE approach is all about generating random summaries,in short hallucinating. **This is why the approach will work for new book titles**
+  - The **Document Extraction** (part of HyDE) is about using these hallucinated summaries to do semantic search on database. 
+
+
+**Why to fine-tune GPT-2**
+
 1. We want it to hallucinate but withing boundaries i.e. speak words/ language that we have in books_summaries.csv NOT VERY DIFFERENT OUT OF WORLD LOGIC.
 
 2. Prompt Tune such that we can get consistent results. (Screenshot from https://huggingface.co/openai-community/gpt2); The screenshot show the model is mildly consistent.
 
-  ![image](https://github.com/user-attachments/assets/1b974da8-799b-48b8-8df7-be17a612f666)
-  
-  > we are going to use ``clean_books_summary.csv` dataset in this training to align with the prompt of ingesting different genre.
+  ![image](.resources/fine-tune.png)
    
 Reference: 
 - HyDE Approach, Precise Zero-Shot Dense Retrieval without Relevance Labels https://arxiv.org/pdf/2212.10496
@@ -168,32 +176,39 @@ Reference:
       - His code base is too much, can edit it but not worth the effort.
 - Fine-tuning code instructions are from https://huggingface.co/docs/transformers/en/tasks/language_modeling
 
-Command
+**RUN**
 
-You must supply your token from huggingface, required to push model to HF
 
-```SH
-huggingface-cli login
-```
+If you want to 
+
+  - push to HF. You must supply your token from huggingface, required to push model to HF
+
+    ```SH
+    huggingface-cli login
+    ```
+  
+  - Not Push to HF, then in `z_finetune_gpt.py`:
+
+    - set line 59 ` push_to_hub` to `False`
+    - comment line 77 `trainer.push_to_hub()`
 
 We are going to use dataset `clean_books_summary.csv` while triggering this training.
 
 ```SH
 python z_finetune_gpt.py
 ```
-(Training lasts ~30 mins for 10 epochs with T4 GPU)
 
-![image](https://github.com/user-attachments/assets/46253d48-903a-4977-b3f5-39ea1e6a6fd6)
+Image below just shows for 2 epochs, but the one push to my HF https://huggingface.co/LunaticMaestro/gpt2-book-summary-generator is trained for 10 epochs that lasts ~30 mins for 10 epochs with T4 GPU **reduing loss to 0.87 ~ (perplexity = 2.38)**
+
+![image](.resources/fine-tune2.png)
 
 
-The loss you see is cross-entryopy loss; as ref in the fine-tuning instructions (see above reference) states : `Transformers models all have a default task-relevant loss function, so you don’t need to specify one `
-
-![image](https://github.com/user-attachments/assets/13e9b868-6352-490c-9803-c5e49f8e8ae8)
+The loss you see is cross-entryopy loss; as ref in the [fine-tuning instructions](https://huggingface.co/docs/transformers/en/tasks/language_modeling) : `Transformers models all have a default task-relevant loss function, so you don’t need to specify one `
 
 So all we care is lower the value better is the model trained :) 
 
-We are NOT going to test this unit model for some test dataset as the model is already proven (its GPT-2 duh!!).
-But **we are going to evaluate our HyDE approach end-2-end next to ensure sanity of the approach**.
+We are NOT going to test this unit model on some test dataset as the model is already proven (its GPT-2 duh!!).
+But **we are going to evaluate our HyDE approach end-2-end next to ensure sanity of the approach** that will inherently prove the goodness of this model.
 
 ## Evaluation
 
