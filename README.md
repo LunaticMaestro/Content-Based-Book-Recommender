@@ -31,7 +31,8 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
 ## Table of Content
 
-- [Running Inference Locally](#libraries-execution)
+- [Running Inference Locally](#running-inference)
+    - [Colab 🏎️ & minimal set up](#goolge-colab)
 - [10,000 feet Approach overview](#approach)
 - Pipeline walkthrough in detail
 
@@ -47,7 +48,7 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
   - [Evaluation Metric & Result](#evaluation-metric--result)
 
-## Running Inference Locally
+## Running Inference
 
 ### Memory Requirements
 
@@ -59,7 +60,7 @@ The code need <2Gb RAM to use both the following. Just CPU works fine for infere
 
 ### Libraries 
 
-I used google colab (CPU Only) with following libraries extra.
+`requirements.txt` is set up such that HF can best not create conflict. I developed the code in google colab with following libraries that required manual installation.
 
 ```SH
 pip install sentence-transformers datasets gradio
