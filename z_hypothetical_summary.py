@@ -11,8 +11,12 @@ TRAINED_CASUAL_MODEL = "LunaticMaestro/gpt2-book-summary-generator"
 generator_model = None 
 
 def load_model():
+    '''Work around to speed up HF cross-script loading'''
     global generator_model
-    generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+    if generator_model is None:
+        generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
+    else: 
+        return generator_model
 
 
 def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2, top_k = 50, top_p = 0.85, model=None) -> list[str]:
@@ -23,17 +27,13 @@ def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2
         n_samples: (default=2) count of hypothetical summaries
         top_k: (default = 50) 
         top_p: (default=0.85)
-
         model: CASUAL LM; this is a hack to adjust for faster response in gradio
+        
     Returns: 
         summaries: list of hypothetical summaries.
     '''
-    global generator_model
-
-    if model: 
-        generator_model = model 
-    else:
-        generator_model = generator_model if generator_model is not None else load_model()
+    # select model
+    generator_model = model if model else generator_model
 
     # basic prompt very similary to one used in fine-tuning
     prompt = f'''Book Title: {book_title}

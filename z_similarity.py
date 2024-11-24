@@ -15,6 +15,8 @@ def computes_similarity_w_hypothetical(hypothetical_summaries: list[str], model 
         Ranks of the books summaries based on above consine similarity Distance; Lower ranks means more similar
     '''
     global books_summaries_embs
+
+    # Select model
     model = model if model else load_model()
     
     hypothetical_summaries_embs = get_embeddings(hypothetical_summaries)

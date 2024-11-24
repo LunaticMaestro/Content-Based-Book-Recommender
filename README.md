@@ -216,9 +216,9 @@ Before discussing evaluation metric let me walk you through two important pieces
 
 ### Recommendation Generation
 
-The generation is handled by script `z_hypothetical_summary.py`. Under the hood following happens
+The generation is handled by functions in script `z_hypothetical_summary.py`. Under the hood following happens
 
-![image](https://github.com/user-attachments/assets/ee174c38-a1f3-438a-afb8-be2888c590da)
+![image](.resources/eval1.png)
 
 Code Preview. I did the minimal post processing to chop of the `prompt` from the generated summaries before returning the result.
 
