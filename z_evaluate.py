@@ -1,3 +1,5 @@
+# This is one time script, hence no functions but sequential coding
+
 import random 
 from z_utils import get_dataframe
 from z_similarity import computes_similarity_w_hypothetical
@@ -8,7 +10,7 @@ import numpy as np
 # CONST
 random.seed(53)
 CLEAN_DF_UNIQUE_TITLES = "unique_titles_books_summary.csv"
-N_SAMPLES_EVAL = 2
+N_SAMPLES_EVAL = 30
 TOP_K = 50
 TOP_P = 0.85
 

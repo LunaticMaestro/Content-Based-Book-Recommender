@@ -16,7 +16,10 @@ GRADIO_TITLE = "Content Based Book Recommender"
 GRADIO_DESCRIPTION = '''
 This is a [HyDE](https://arxiv.org/abs/2212.10496) based searching mechanism that generates random summaries using your input book title and matches books which has summary similary to generated ones. The books, for search, are used from used [Kaggle Dataset: arpansri/books-summary](https://www.kaggle.com/datasets/arpansri/books-summary)
 
-**Should take ~ 15s to 30s** for inferencing. If taking time then then its cold starting in HF space which lasts 300s and **decreases to 15s when you have made sufficiently many ~10 to 15 call**
+**Should take ~ 15s to 30s** for inferencing.
+
+## Is it slow 🐢? (Happens in free HF space)
+Cold starting in HF space can lead to model file reloading. The entire process will lasts 300s  and **decreases to 15s when you have made sufficiently many ~10 to 15 calls**
 '''
 
 # Caching mechanism for gradio

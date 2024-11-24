@@ -21,9 +21,11 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
 - All images are my actual work please source powerpoint of them in `.resources` folder of this repo.
 
-- Code is documentation is as per [Google's Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- Code is documentation is as per [Google's Python Style Guide](https://google.github.io/styleguide/pyguide.html).
 
-- ALL files Paths are at set as CONST in beginning of each script, to make it easier while using the paths while inferencing & evaluation; hence not passing as CLI arguments
+- ALL files Paths are at set as CONST in beginning of each script, to make it easier while using the paths while inferencing & evaluation; hence not passing as CLI arguments.
+
+- Seed value for code reproducability is set at as CONST as well.
 
 - prefix `z_` in filenames is just to avoid confusion (to human) of which is prebuilt module and which is custom during import.
 
@@ -220,31 +222,41 @@ The generation is handled by functions in script `z_hypothetical_summary.py`. Un
 
 ![image](.resources/eval1.png)
 
-Code Preview. I did the minimal post processing to chop of the `prompt` from the generated summaries before returning the result.
+**Function Preview** I did the minimal post processing to chop of the `prompt` from the generated summaries before returning the result.
 
-![image](https://github.com/user-attachments/assets/132e84a7-cb4f-49d2-8457-ff473224bad6)
+![image](.resources/eval2.png)
 
 ### Similarity Matching 
 
-![image](https://github.com/user-attachments/assets/229ce58b-77cb-40b7-b033-c353ee41b0a6)
+![image](.resources/eval3.png)
 
-![image](https://github.com/user-attachments/assets/58613cd7-0b73-4042-b98d-e6cdf2184c32)
+![image](.resources/eval4.png)
 
-Because there are 1230 unique titles so we get the averaged similarity vector of same size.
+**Function Preview** Because there are 1230 unique titles so we get the averaged similarity vector of same size.
 
-![image](https://github.com/user-attachments/assets/cc7b2164-a437-4517-8edb-cc0573c8a5e6)
+![image](.resources/eval5.png)
 
 ### Evaluation Metric
 
 So for given input title we can get rank (by desc order cosine similarity) of the store title. To evaluate we the entire approach we are going to use a modified version **Mean Reciprocal Rank (MRR)**.
 
-![image](https://github.com/user-attachments/assets/0cb8fc2a-8834-4cda-95d2-52a02ac9c11d)
+![image](.resources/eval6.png)
 
-We are going to do this for random 30 samples and compute the mean of their reciprocal ranks. Ideally all the title should be ranked 1 and their MRR should be equal to 1. Closer to 1 is good.
+
+
+Test Plan:
+  - Take random 30 samples and compute the mean of their reciprocal ranks. 
+  - If we want that our known book titles be in top 5 results then MRR >= 1/5 = 0.2
+
+**RUN**
+
+```SH 
+python z_evaluate.py
+```
 
 ![image](https://github.com/user-attachments/assets/d2c77d47-9244-474a-a850-d31fb914c9ca)
 
-The values of TOP_P and TOP_K (i.e. token sampling for our generator model) are sent as `CONST` in the `z_evaluate.py`; The current set of values of this are borrowed from the work: https://www.kaggle.com/code/tuckerarrants/text-generation-with-huggingface-gpt2#Top-K-and-Top-P-Sampling
+The values of TOP_P and TOP_K (i.e. token sampling for our generator model) are sent as `CONST` in the `z_evaluate.py`; The current set of values are borrowed from the work: https://www.kaggle.com/code/tuckerarrants/text-generation-with-huggingface-gpt2#Top-K-and-Top-P-Sampling
 
 MRR = 0.311 implies that there's a good change that the target book will be in rank (1/.311) ~ 3 (third rank) **i.e. within top 5 recommendations**
 
