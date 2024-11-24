@@ -15,8 +15,7 @@ def load_model():
     global generator_model
     if generator_model is None:
         generator_model = pipeline('text-generation', model=TRAINED_CASUAL_MODEL)
-    else: 
-        return generator_model
+    return generator_model
 
 
 def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2, top_k = 50, top_p = 0.85, model=None) -> list[str]:
