@@ -28,12 +28,12 @@ def generate_summaries(book_title: str, genre: Optional[str] = None, n_samples=2
         top_k: (default = 50) 
         top_p: (default=0.85)
         model: CASUAL LM; this is a hack to adjust for faster response in gradio
-        
+
     Returns: 
         summaries: list of hypothetical summaries.
     '''
     # select model
-    generator_model = model if model else generator_model
+    generator_model = model if model else load_model()
 
     # basic prompt very similary to one used in fine-tuning
     prompt = f'''Book Title: {book_title}
