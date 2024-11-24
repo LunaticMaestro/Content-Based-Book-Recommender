@@ -236,13 +236,11 @@ The generation is handled by functions in script `z_hypothetical_summary.py`. Un
 
 ![image](.resources/eval5.png)
 
-### Evaluation Metric
+### Evaluation Metric & Result
 
 So for given input title we can get rank (by desc order cosine similarity) of the store title. To evaluate we the entire approach we are going to use a modified version **Mean Reciprocal Rank (MRR)**.
 
 ![image](.resources/eval6.png)
-
-
 
 Test Plan:
   - Take random 30 samples and compute the mean of their reciprocal ranks. 
@@ -254,11 +252,13 @@ Test Plan:
 python z_evaluate.py
 ```
 
-![image](https://github.com/user-attachments/assets/d2c77d47-9244-474a-a850-d31fb914c9ca)
+![image](.resources/eval7.png)
 
 The values of TOP_P and TOP_K (i.e. token sampling for our generator model) are sent as `CONST` in the `z_evaluate.py`; The current set of values are borrowed from the work: https://www.kaggle.com/code/tuckerarrants/text-generation-with-huggingface-gpt2#Top-K-and-Top-P-Sampling
 
 MRR = 0.311 implies that there's a good change that the target book will be in rank (1/.311) ~ 3 (third rank) **i.e. within top 5 recommendations**
+
+> TODO: A sampling study can be done to better make this conclusion.
 
 ## Inference
 

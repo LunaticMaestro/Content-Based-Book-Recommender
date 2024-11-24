@@ -93,4 +93,4 @@ demo = gr.Interface(
     description=GRADIO_DESCRIPTION
 )
 
-demo.launch()
+demo.launch(share=True)
