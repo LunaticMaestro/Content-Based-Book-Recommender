@@ -31,8 +31,6 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
 
 ## Table of Content
 
-> 
-
 - [Running Inference Locally](#libraries-execution)
 - [10,000 feet Approach overview](#approach)
 - Pipeline walkthrough in detail
@@ -43,8 +41,12 @@ Try it out: https://huggingface.co/spaces/LunaticMaestro/book-recommender
     - [Step 2: Generate vectors of the books summaries](#step-2-generate-vectors-of-the-books-summaries)
     - [Step 3: Fine-tune GPT-2 to Hallucinate but with some bounds.](#step-3-fine-tune-gpt-2-to-hallucinate-but-with-some-bounds)
 
-  - [Evaluation](#evaluation)
-  - Inference
+  - [Parts of Inference](#parts-of-inference)
+    - [How Recommendation is working](#recommendation-generation)
+    - [How Similarity Matching is working](#similarity-matching)
+
+  - [Evaluation Metric & Result](#evaluation-metric--result)
+
 ## Running Inference Locally
 
 ### Memory Requirements
@@ -56,13 +58,38 @@ The code need <2Gb RAM to use both the following. Just CPU works fine for infere
 
 
 ### Libraries 
-I used google colab with following libraries extra.
+
+I used google colab (CPU Only) with following libraries extra.
 
 ```SH
-pip install sentence-transformers datasets
+pip install sentence-transformers datasets gradio
 ```
 
 ### Running 
+
+#### Goolge Colab 
+
+```
+!pip install sentence-transformers datasets gradio
+!git clone https://github.com/LunaticMaestro/Content-Based-Book-Recommender
+%cd /content/Content-Based-Book-Recommender
+```
+
+```
+!python app.py
+```
+![image](.resources/colab_run.png)
+
+**Access the code at public link**
+
+Also colab is fast. 🏎️ even with CPU only takes 16s
+
+![image](.resources/colab_fast.png)
+
+Sidenotes: 
+1. I rewrote the snippets from `z_evaluate.py` to `app.py`, cuz need to handle gradio rendering differently. 
+2. DONT set `debug=True` for gradio in HF space, else it doesn't start.
+3. Free HF space work differently for persisting models (cache files) across local running (tried in colab space) works  faster. **You will see lot of my commits in HF Space to discover this problem.**
 
 #### Local System 
 
@@ -70,14 +97,6 @@ pip install sentence-transformers datasets
 python app.py
 ```
 access at http://localhost:7860/ 
-
-#### Goolge Colab 
-
-Modify app.py edit line 93 to `demo.launch(share=True)` then run following in cell.
-
-```
-!python app.py
-```
 
 ## Approach
 
@@ -212,7 +231,7 @@ So all we care is lower the value better is the model trained :)
 We are NOT going to test this unit model on some test dataset as the model is already proven (its GPT-2 duh!!).
 But **we are going to evaluate our HyDE approach end-2-end next to ensure sanity of the approach** that will inherently prove the goodness of this model.
 
-## Evaluation
+## Parts of Inference
 
 Before discussing evaluation metric let me walk you through two important pieces recommendation generation and similarity matching;
 
@@ -236,7 +255,7 @@ The generation is handled by functions in script `z_hypothetical_summary.py`. Un
 
 ![image](.resources/eval5.png)
 
-### Evaluation Metric & Result
+## Evaluation Metric & Result
 
 So for given input title we can get rank (by desc order cosine similarity) of the store title. To evaluate we the entire approach we are going to use a modified version **Mean Reciprocal Rank (MRR)**.
 
@@ -259,19 +278,6 @@ The values of TOP_P and TOP_K (i.e. token sampling for our generator model) are 
 MRR = 0.311 implies that there's a good change that the target book will be in rank (1/.311) ~ 3 (third rank) **i.e. within top 5 recommendations**
 
 > TODO: A sampling study can be done to better make this conclusion.
-
-## Inference
-
-`app.py` is written so that it can best work with gradio interface in the HuggingFace, althought you can try it out locally as well :)
-
-```SH
-python app.py
-```
-
-1. I rewrote the snippets from `z_evaluate.py` to `app.py` with minor changes to expriment with view. 
-2. DONT set `debug=True` for gradio in HF space, else it doesn't start.
-3. HF space work differently for retaining models across module scipts; local running (tried in colab space) works  faster. You will see lot of my commits in HF Space to work around this problem.
-
 
 
 
